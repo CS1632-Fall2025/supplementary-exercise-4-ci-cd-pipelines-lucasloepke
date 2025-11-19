@@ -12,9 +12,16 @@ public interface RentACat {
 				return new RentACatBuggy();
 			case SOLUTION:
 				return new RentACatSolution();
-			case MOCK:
-				// TODO: Return a mock object that emulates the behavior of a real object.
-				return null;
+			case MOCK: {
+				RentACat m = mock(RentACat.class);
+
+				when(m.rentCat(anyInt())).thenReturn(true);
+				when(m.returnCat(anyInt())).thenReturn(true);
+				when(m.renameCat(anyInt(), anyString())).thenReturn(true);
+				when(m.listCats()).thenReturn("");
+
+				return m;
+			}
 			default:
 				assert (false);
 				return null;

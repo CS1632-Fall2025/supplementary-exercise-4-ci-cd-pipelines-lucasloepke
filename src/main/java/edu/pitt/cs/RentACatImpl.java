@@ -18,9 +18,17 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public boolean returnCat(int id) {
-		// TODO: Fill in
+	// TODO: Fill in
+	Cat c = getCat(id);
+	if (c == null) return false;              // "Invalid cat ID." already printed by getCat
+	if (!c.getRented()) {
+		System.out.println(c.getName() + " is already here!");
 		return false;
 	}
+	c.returnCat();
+	System.out.println("Welcome back, " + c.getName() + "!");
+	return true;
+}
 
 	/**
 	 * Rent a cat. This should call the .rentCat() method on the cat for the
@@ -33,9 +41,17 @@ public class RentACatImpl implements RentACat {
 	 */
 
 	public boolean rentCat(int id) {
-		// TODO: Fill in
+	// TODO: Fill in
+	Cat c = getCat(id);
+	if (c == null) return false;	// "Invalid cat ID." already printed by getCat
+	if (c.getRented()) {
+		System.out.println("Sorry, " + c.getName() + " is not here!");
 		return false;
 	}
+	c.rentCat();
+	System.out.println(c.getName() + " has been rented.");
+	return true;
+}
 
 	/**
 	 * Rename a cat. This calls the .renameCat(String) method on the cat for the
@@ -48,7 +64,12 @@ public class RentACatImpl implements RentACat {
 
 	public boolean renameCat(int id, String name) {
 		// TODO: Fill in
-		return false;
+		Cat c = getCat(id);
+		if (c == null) {
+			return false;
+		}
+		c.renameCat(name);
+		return true;
 	}
 
 	/**
@@ -63,7 +84,13 @@ public class RentACatImpl implements RentACat {
 
 	public String listCats() {
 		// TODO: Fill in
-		return "WRITE CODE FOR THIS";
+		StringBuilder sb = new StringBuilder();
+		for (Cat c : cats) {
+			if (!c.getRented()) {
+				sb.append(c.toString()).append("\n");
+			}
+		}
+		return sb.toString();
 	}
 
 	/**

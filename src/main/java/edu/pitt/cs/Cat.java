@@ -12,9 +12,23 @@ public interface Cat {
 				return new CatBuggy(id, name);
 			case SOLUTION:
 				return new CatSolution(id, name);
-			case MOCK:
-			    // TODO: Return a mock object that emulates the behavior of a real object.
-				return null;
+			case MOCK: {
+				Cat m = mock(Cat.class);
+				final String[] nm = { name };
+				final boolean[] rented = { false };
+
+				when(m.getId()).thenReturn(id);
+				when(m.getName()).thenAnswer(inv -> nm[0]);
+				when(m.getRented()).thenAnswer(inv -> rented[0]);
+				when(m.toString()).thenAnswer(inv -> "ID " + id + ". " + nm[0]);
+
+				doAnswer(inv -> { rented[0] = true; return null; }).when(m).rentCat();
+				doAnswer(inv -> { rented[0] = false; return null; }).when(m).returnCat();
+				doAnswer(inv -> { nm[0] = inv.getArgument(0, String.class); return null; })
+					.when(m).renameCat(Mockito.anyString());
+
+				return m;
+			}
 			default:
 				assert(false);
 				return null;
